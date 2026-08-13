@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const PAGE_COUNT = 9;
 const pages = Array.from({ length: PAGE_COUNT }, (_, index) => index + 1);
+const assetBase = import.meta.env.BASE_URL;
 
 export function App() {
   const deckRef = useRef(null);
@@ -101,8 +102,8 @@ export function App() {
             <img
               src={
                 pageNumber === 3
-                  ? "/pages/page-3-filled-v3.png"
-                  : `/pages/page-${pageNumber}.png`
+                  ? `${assetBase}pages/page-3-filled-v3.png`
+                  : `${assetBase}pages/page-${pageNumber}.png`
               }
               alt={`JDI$ 项目概念与代币经济模型，第 ${pageNumber} 页`}
               width="3912"
