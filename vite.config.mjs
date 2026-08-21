@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { readFileSync } from "node:fs";
 
 export default defineConfig({
   base: process.env.GITHUB_ACTIONS ? "/JDI/" : "/",
@@ -16,5 +17,13 @@ export default defineConfig({
       clientFiles: ["./src/main.jsx"],
     },
   },
-  plugins: [react()],
+  plugins: [
+    {
+      name: "jdi-embedded-home",
+      transformIndexHtml() {
+        return readFileSync(new URL("./public/jdi-embedded.html", import.meta.url), "utf8");
+      },
+    },
+    react(),
+  ],
 });
