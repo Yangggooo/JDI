@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>JDI$</title>
+<link rel="preload" as="image" href="/assets/cinematic/coin-hero-guardian-v3.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/pain-guardian.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/mission-guardian.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/dawn-collective.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/value-capture.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/token-allocation.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/value-loop.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/road-guardian.jpg" />
+<link rel="preload" as="image" href="/assets/cinematic/final-guardian.jpg" />
+<style>
+  :root {
+    --bg:#070d14;
+    --text:rgba(255,255,255,.92);
+    --muted:rgba(255,255,255,.58);
+    --active:#f0ad24;
+    --gold:#f0ad24;
+    --gold-soft:#f0ad24;
+    --line:rgba(240,173,36,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text)}
+  body{
+    font-family:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+    overflow:hidden;
+  }
+  button,a{font:inherit}
+  .deck{
+    height:100dvh;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scroll-snap-type:y mandatory;
+    scrollbar-width:none;
+    background:var(--bg);
+  }
+  .deck::-webkit-scrollbar{display:none}
+  .screen{
+    position:relative;
+    isolation:isolate;
+    min-height:100dvh;
+    height:100dvh;
+    overflow:hidden;
+    scroll-snap-align:start;
+    scroll-snap-stop:always;
+    background:var(--bg);
+  }
+  .art{position:absolute;inset:0;z-index:-3;overflow:hidden;background:#000}
+  .art img{
+    display:block;width:100%;height:100%;margin:0;
+    object-fit:cover;object-position:center;
+    filter:saturate(1.08) contrast(1.14) brightness(.95);
+    user-select:none;pointer-events:none;
+  }
+  .art::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,#010306 0%,rgba(1,3,6,.88) 22%,rgba(1,3,6,.32) 52%,rgba(1,3,6,.03) 100%);
+    pointer-events:none;
+  }
+  .wide-art img{width:100%;margin:0;opacity:.8}
+  .wide-art::after{background:linear-gradient(90deg,rgba(1,3,6,.76),rgba(1,3,6,.44) 34%,rgba(1,3,6,.16) 70%,rgba(1,3,6,.04))}
+  .hero-art img{width:100%;margin:0;object-position:right center;filter:saturate(1.08) contrast(1.1) brightness(1.05)}
+  .hero-art::after{background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.96) 28%,rgba(0,0,0,.38) 54%,rgba(0,0,0,.02) 100%)}
+  .pain-art img{width:100%;object-position:center}
+  .contact-art img{width:100%;object-position:75% center;filter:saturate(1.08) contrast(1.12) brightness(.95)}
+
+  .topbar{
+    position:fixed;left:0;right:0;top:0;z-index:100;
+    height:64px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 18px;
+    background:linear-gradient(180deg,rgba(5,9,14,.9),rgba(5,9,14,.18));
+    border-bottom:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(10px);
+    pointer-events:none;
+  }
+  .brand{
+    pointer-events:auto;cursor:pointer;background:none;border:0;padding:0;
+    width:48px;height:36px;display:grid;place-items:center;
+  }
+  .brand svg{display:block;width:auto;height:34px}
+  .pager{display:flex;align-items:center;gap:6px;pointer-events:auto}
+  .pager button{
+    width:28px;height:28px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(4,8,12,.45);
+    color:#7d8793;font-size:9px;font-weight:900;cursor:pointer;transition:.18s ease;
+  }
+  .pager button:hover{color:#fff;border-color:rgba(240,173,36,.5)}
+  .pager button.active{
+    background:var(--active);border-color:var(--active);color:#111418;
+    box-shadow:0 0 20px rgba(240,173,36,.25);
+  }
+  .brand:focus-visible,.pager button:focus-visible,.contact-lines a:focus-visible{
+    outline:2px solid var(--active);outline-offset:3px;
+  }
+  .side-label{
+    position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:95;
+    writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.18em;
+    font-size:10px;color:var(--muted);pointer-events:none;
+  }
+  .progress{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:110;background:rgba(255,255,255,.05)}
+  .progress > span{
+    display:block;height:100%;width:11.111%;
+    background:linear-gradient(90deg,#00d7d9,#9366ff,#ff4d4d,#ff7a00,#f0ad24);
+    transition:width .28s ease;
+  }
+  .hint{
+    position:fixed;left:18px;bottom:14px;z-index:96;
+    display:flex;gap:10px;align-items:center;
+    font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);pointer-events:none;
+  }
+  .hint .key{
+    display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 8px;
+    border:1px solid rgba(255,255,255,.12);border-radius:8px;
+    background:rgba(4,8,12,.45);color:rgba(255,255,255,.78);
+  }
+
+  .content{
+    position:relative;z-index:2;
+    display:flex;flex-direction:column;justify-content:center;
+    width:min(1240px,calc(100% - 112px));min-height:100%;margin:0 auto;
+    padding:112px 0 62px;
+  }
+  .copy{position:absolute;z-index:2;top:50%;left:max(5.5%,56px);width:min(700px,53%);transform:translateY(-45%)}
+  .eyebrow{margin:0 0 28px;color:#a9adb4;font-size:clamp(.72rem,1vw,.95rem);font-weight:800;letter-spacing:.025em}
+  h1,h2,h3,p{margin-top:0}
+  .hero-copy{top:29%;transform:none}
+  .hero-copy h1{
+    margin:0;color:#fff;font-size:clamp(3.15rem,4.65vw,4.7rem);
+    font-weight:950;line-height:1.15;letter-spacing:-.015em;white-space:nowrap;
+    text-shadow:0 4px 24px #000;
+  }
+  .hero-copy h1 span{display:inline}
+  .hero-token{
+    display:block;margin:17px 0 16px;color:var(--gold);
+    font-size:clamp(3.5rem,5.5vw,5.3rem);font-weight:950;line-height:.98;
+    letter-spacing:-.065em;text-shadow:0 0 34px rgba(240,173,36,.3);
+  }
+  .hero-summary{max-width:650px;margin:0;color:#c2c3c5;font-size:clamp(.96rem,1.18vw,1.16rem);line-height:1.65}
+  .section-title{
+    max-width:920px;margin:0;color:#fff;
+    font-size:clamp(2.65rem,4.15vw,4.35rem);font-weight:950;line-height:1.15;
+    letter-spacing:-.015em;text-shadow:none;
+  }
+  .section-title::before{
+    content:"";display:block;width:68px;height:3px;margin-bottom:19px;
+    background:var(--gold-soft);box-shadow:0 0 18px rgba(240,173,36,.42);
+  }
+  .section-title.compact{font-size:clamp(2.35rem,3.35vw,3.55rem)}
+  .copy .section-title{font-size:clamp(3rem,4.6vw,4.75rem)}
+  .pain-title>span{display:block}
+  .contact-title>span{display:block}
+  .jdi-regular{font-weight:inherit}
+  .pdf-gold{color:var(--gold-soft)}
+  .copy>p{max-width:610px;margin:27px 0 0;color:#d0d1d3;font-size:clamp(1rem,1.2vw,1.17rem);line-height:1.9}
+  .content>.section-title{margin-bottom:clamp(40px,6vh,68px)}
+
+  /* Three page families: cinematic covers, structured systems and one dense deep-dive. */
+  .screen--system .content::before{
+    content:"";position:absolute;z-index:0;inset:78px -58px 38px;
+    background:linear-gradient(90deg,rgba(1,4,8,.72),rgba(1,4,8,.42) 56%,rgba(1,4,8,0) 100%);
+    pointer-events:none;
+  }
+  .screen--system .content>*{position:relative;z-index:1}
+
+  .two-grid,.three-grid,.roadmap-grid,.capture-grid{display:grid}
+  .two-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:1080px}
+  .two-grid article{min-height:310px;padding:32px 52px 18px 0;border-top:2px solid var(--line)}
+  .two-grid article+article{padding-right:0;padding-left:52px;border-left:1px solid var(--line)}
+  .three-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .three-grid article{min-height:300px;padding:34px 34px 18px;border-top:2px solid var(--line);border-right:1px solid var(--line)}
+  .three-grid article:first-child{padding-left:0}
+  .three-grid article:last-child{padding-right:0;border-right:0}
+  article h3{margin:0 0 22px;color:var(--gold-soft);font-size:clamp(1.08rem,1.38vw,1.35rem);line-height:1.4}
+  article p{margin:0;color:#cdd0d3;font-size:clamp(.9rem,1vw,1rem);line-height:1.78;text-shadow:0 2px 8px #000}
+  .number-mark{
+    display:grid;place-items:center;width:54px;height:54px;margin-bottom:28px;
+    border:1px solid rgba(240,173,36,.52);border-radius:50%;
+    color:var(--gold-soft);background:rgba(2,5,9,.72);font-weight:900;
+    box-shadow:0 0 28px rgba(240,173,36,.12);
+  }
+  .allocation-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--line)}
+  .allocation-list article{min-height:230px;padding:30px 28px;border-right:1px solid rgba(255,255,255,.14)}
+  .allocation-list article:first-child{padding-left:0}
+  .allocation-list article:last-child{padding-right:0;border-right:0}
+  .allocation-value{display:block;margin-bottom:24px;color:var(--gold-soft);font-size:clamp(2.7rem,4vw,4.3rem);font-weight:950;line-height:1}
+  .allocation-label{color:#d1d2d4;font-size:clamp(.9rem,1vw,1rem);line-height:1.7}
+  .capture-grid{grid-template-columns:repeat(2,minmax(0,1fr));border-top:2px solid var(--line)}
+  .capture-grid article{padding:28px 42px 0 0}
+  .capture-grid article+article{padding-right:0;padding-left:42px;border-left:1px solid var(--line)}
+  .capture-grid p{margin:0 0 14px;font-size:clamp(.82rem,.91vw,.94rem);line-height:1.65}
+  .capture-grid strong{color:#fff}
+  .roadmap-grid{grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--line)}
+  .roadmap-grid article{min-height:290px;padding:30px 24px;border-right:1px solid rgba(255,255,255,.14)}
+  .roadmap-grid article:first-child{padding-left:0}
+  .roadmap-grid article:last-child{padding-right:0;border-right:0}
+  .roadmap-grid p{font-size:clamp(.84rem,.92vw,.96rem);line-height:1.75}
+
+  /* Each system screen gets a distinct reading rhythm without changing its copy. */
+  .screen--pillars .number-mark{
+    display:block;width:auto;height:auto;margin-bottom:26px;
+    border:0;border-radius:0;background:transparent;box-shadow:none;
+    color:rgba(240,173,36,.72);font-size:clamp(2.6rem,3.5vw,3.8rem);line-height:1;
+  }
+  .screen--pillars .three-grid article h3{font-size:clamp(1.18rem,1.55vw,1.5rem)}
+  .screen--roadmap .roadmap-grid{position:relative;border-top:1px solid rgba(240,173,36,.48)}
+  .screen--roadmap .roadmap-grid article{position:relative;border-right:0;padding-top:40px}
+  .screen--roadmap .roadmap-grid article::before{
+    content:"";position:absolute;top:-7px;left:24px;width:13px;height:13px;
+    border:2px solid var(--gold-soft);border-radius:50%;background:#070d14;
+    box-shadow:0 0 18px rgba(240,173,36,.34);
+  }
+  .screen--roadmap .roadmap-grid article:first-child::before{left:0}
+
+  @media (min-width:1050px){
+    .screen--mission .content{
+      display:grid;grid-template-columns:minmax(330px,.82fr) minmax(0,1.18fr);
+      align-items:center;gap:clamp(52px,6vw,94px);
+    }
+    .screen--mission .content>.section-title{max-width:430px;margin:0}
+    .screen--mission .two-grid{grid-template-columns:1fr;max-width:none;border-top:2px solid var(--line)}
+    .screen--mission .two-grid article,
+    .screen--mission .two-grid article+article{
+      display:grid;grid-template-columns:54px minmax(160px,.62fr) minmax(0,1.38fr);
+      gap:24px;align-items:start;min-height:0;padding:28px 0;
+      border-top:0;border-right:0;border-left:0;border-bottom:1px solid var(--line);
+    }
+    .screen--mission .two-grid article:last-child{border-bottom:0}
+    .screen--mission .two-grid .number-mark{margin:0}
+    .screen--mission .two-grid h3{margin:12px 0 0}
+    .screen--mission .two-grid p{margin:8px 0 0}
+
+    .screen--allocation .content{
+      display:grid;grid-template-columns:minmax(310px,.7fr) minmax(0,1.3fr);
+      align-items:center;gap:clamp(56px,7vw,108px);
+    }
+    .screen--allocation .content>.section-title{max-width:430px;margin:0}
+    .screen--allocation .allocation-title-line{display:block}
+    .screen--allocation .allocation-list{grid-template-columns:repeat(2,minmax(0,1fr));border-top:0}
+    .screen--allocation .allocation-list article,
+    .screen--allocation .allocation-list article:first-child,
+    .screen--allocation .allocation-list article:last-child{
+      min-height:190px;padding:30px 28px;border-top:1px solid var(--line);border-right:0;
+    }
+    .screen--allocation .allocation-list article:nth-child(odd){padding-left:0}
+    .screen--allocation .allocation-list article:nth-child(even){border-left:1px solid rgba(255,255,255,.14)}
+  }
+
+  /* Desktop composition rhythm: alternate image, copy and data focal points. */
+  @media (min-width:901px){
+    .screen--hero .hero-copy{
+      display:grid;grid-template-columns:max-content max-content;
+      align-items:end;column-gap:0;
+      top:45%;left:30%;width:max-content;max-width:56%;
+      transform:translate(-50%,-50%);text-align:left;
+    }
+    .screen--hero .eyebrow,.screen--hero .hero-summary{grid-column:1/-1}
+    .screen--hero .eyebrow,.screen--hero .hero-summary{justify-self:start}
+    .screen--hero .hero-token{margin:0 0 3px -.025em}
+    .screen--hero .hero-summary{margin-top:18px}
+
+    .screen--pain .pain-art img{transform:none;object-position:center}
+    .screen--pain .pain-art::after{
+      background:
+        radial-gradient(ellipse at center,rgba(1,3,6,.64) 0%,rgba(1,3,6,.38) 36%,rgba(1,3,6,.08) 72%,rgba(1,3,6,.14) 100%),
+        linear-gradient(180deg,rgba(1,3,6,.3),rgba(1,3,6,.08) 50%,rgba(1,3,6,.42) 100%);
+    }
+    .screen--pain .copy{
+      top:50%;right:auto;left:50%;width:min(1120px,86%);transform:translate(-50%,-50%);text-align:center;
+    }
+    .screen--pain .section-title{max-width:none}
+    .screen--pain .section-title::before{margin-right:auto;margin-left:auto}
+    .screen--pain .copy>p{
+      max-width:1100px;margin-right:auto;margin-left:auto;
+      text-wrap:pretty;line-break:strict;word-break:normal;
+    }
+
+    .screen--mission .wide-art::after{
+      background:
+        linear-gradient(90deg,rgba(1,3,6,.72) 0%,rgba(1,3,6,.38) 38%,rgba(1,3,6,.42) 62%,rgba(1,3,6,.72) 100%),
+        linear-gradient(180deg,rgba(1,3,6,.42),rgba(1,3,6,.12) 44%,rgba(1,3,6,.62) 100%);
+    }
+
+    .screen--pillars .content{justify-content:center;padding-top:112px;padding-bottom:62px}
+    .screen--pillars .content>.section-title{max-width:980px;margin-bottom:clamp(38px,4.5vh,58px)}
+    .screen--pillars .three-grid{align-self:stretch}
+    .screen--pillars .content::before{
+      background:linear-gradient(180deg,rgba(1,4,8,.68),rgba(1,4,8,.16) 45%,rgba(1,4,8,.72) 100%);
+    }
+    .screen--pillars .wide-art::after{
+      background:
+        linear-gradient(90deg,rgba(1,3,6,.68) 0%,rgba(1,3,6,.34) 38%,rgba(1,3,6,.4) 62%,rgba(1,3,6,.74) 100%),
+        linear-gradient(180deg,rgba(1,3,6,.54),rgba(1,3,6,.14) 42%,rgba(1,3,6,.7) 100%);
+    }
+
+    .screen--token .art::after{
+      background:
+        radial-gradient(ellipse at center,rgba(1,3,6,.68) 0%,rgba(1,3,6,.46) 32%,rgba(1,3,6,.12) 70%,rgba(1,3,6,.2) 100%),
+        linear-gradient(180deg,rgba(1,3,6,.52) 0%,rgba(1,3,6,.08) 45%,rgba(1,3,6,.58) 100%);
+    }
+    .screen--token .art img{transform:scale(1.45);transform-origin:right center}
+    .screen--token .copy{
+      top:50%;left:50%;width:min(1240px,86%);transform:translate(-50%,-50%);text-align:center;
+    }
+    .screen--token .section-title{max-width:none}
+    .screen--token .section-title::before{margin-right:auto;margin-left:auto}
+    .screen--token .copy>p{max-width:960px;margin-right:auto;margin-left:auto}
+
+    .screen--allocation .content{
+      display:flex;flex-direction:column;justify-content:center;gap:0;
+    }
+    .screen--allocation .content>.section-title{
+      align-self:center;max-width:none;margin:0 0 clamp(38px,5vh,58px);
+      font-size:clamp(2.6rem,3.25vw,3.55rem);text-align:center;
+    }
+    .screen--allocation .content>.section-title::before{margin-right:auto;margin-left:auto}
+    .screen--allocation .allocation-title-line{display:inline}
+    .screen--allocation .allocation-list{
+      grid-template-columns:repeat(4,minmax(0,1fr));width:100%;border-top:1px solid var(--line);
+    }
+    .screen--allocation .allocation-list article,
+    .screen--allocation .allocation-list article:first-child,
+    .screen--allocation .allocation-list article:last-child{
+      position:relative;min-height:230px;padding:30px 36px;border-top:0;border-right:0;border-left:0;
+    }
+    .screen--allocation .allocation-list article:first-child{padding-left:0}
+    .screen--allocation .allocation-list article:nth-child(n+2){padding-left:36px;border-left:0}
+    .screen--allocation .allocation-list article+article::before{
+      content:"";position:absolute;top:0;bottom:0;left:0;width:1px;background:var(--line);
+    }
+    .screen--allocation .allocation-value{font-size:clamp(2.8rem,3.6vw,3.85rem)}
+    .screen--allocation .content::before{display:none}
+    .screen--allocation .wide-art::after{
+      background:
+        linear-gradient(90deg,rgba(1,4,8,.7) 0%,rgba(1,4,8,.36) 38%,rgba(1,4,8,.46) 62%,rgba(1,4,8,.8) 100%),
+        linear-gradient(180deg,rgba(1,4,8,.42),rgba(1,4,8,.14) 42%,rgba(1,4,8,.68) 100%);
+    }
+
+    .screen--capture .wide-art::after{
+      background:
+        linear-gradient(90deg,rgba(1,3,6,.72) 0%,rgba(1,3,6,.34) 38%,rgba(1,3,6,.42) 56%,rgba(1,3,6,.68) 76%,rgba(1,3,6,.86) 100%),
+        linear-gradient(180deg,rgba(1,3,6,.18),rgba(1,3,6,.08) 48%,rgba(1,3,6,.42) 100%);
+    }
+
+    .screen--roadmap .content{justify-content:center;padding-top:112px;padding-bottom:62px}
+    .screen--roadmap .content>.section-title{align-self:center;max-width:none;margin-bottom:58px;text-align:center}
+    .screen--roadmap .content>.section-title::before{margin-right:auto;margin-left:auto}
+    .screen--roadmap .content::before{display:none}
+    .screen--roadmap .wide-art::after{
+      background:
+        linear-gradient(90deg,rgba(1,4,8,.68) 0%,rgba(1,4,8,.34) 38%,rgba(1,4,8,.48) 62%,rgba(1,4,8,.82) 100%),
+        linear-gradient(180deg,rgba(1,4,8,.5),rgba(1,4,8,.14) 38%,rgba(1,4,8,.8) 100%);
+    }
+
+    .screen--join .contact-art img{object-position:75% center}
+    .screen--join .contact-art::after{
+      background:linear-gradient(90deg,#010306 0%,rgba(1,3,6,.94) 30%,rgba(1,3,6,.42) 57%,rgba(1,3,6,.04) 100%);
+    }
+    .screen--join .copy{
+      top:50%;bottom:auto;left:10.8%;width:min(700px,45%);transform:translateY(-45%);text-align:left;
+    }
+    .screen--join .section-title{max-width:700px}
+    .screen--join .section-title::before{margin-right:0;margin-left:0}
+    .screen--join .copy>p{max-width:610px;margin-right:0;margin-left:0}
+    .screen--join .contact-lines{display:grid;justify-content:start;gap:17px}
+  }
+  .contact-lines{display:grid;gap:17px;margin-top:34px}
+  .contact-lines a,.contact-lines div{display:flex;align-items:center;gap:14px;width:fit-content;color:#d6d5d0;font-size:.96rem;text-decoration:none}
+  .screen--join .contact-lines a,.screen--join .contact-lines div{color:var(--gold-soft)}
+  .contact-lines b{display:grid;place-items:center;width:24px;height:24px;border:1px solid rgba(240,173,36,.6);border-radius:50%;color:var(--gold-soft);font-size:.68rem}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  @media (max-height:780px) and (min-width:901px){
+    .content{padding-top:92px}
+    .hero-copy{top:24%}
+    .content>.section-title{margin-bottom:34px}
+    .two-grid article,.three-grid article,.allocation-list article,.roadmap-grid article{min-height:250px}
+  }
+  @media (max-width:900px){
+    .topbar{height:60px;padding:0 10px;gap:8px;overflow:hidden}
+    .brand{flex:0 0 42px;width:42px;height:36px}
+    .brand svg{height:30px}
+    .pager{
+      flex:1 1 auto;justify-content:flex-start;gap:7px;max-width:calc(100vw - 62px);
+      padding:8px 4px;overflow-x:auto;overscroll-behavior-x:contain;
+      scroll-snap-type:x proximity;scrollbar-width:none;
+    }
+    .pager::-webkit-scrollbar{display:none}
+    .pager button{flex:0 0 38px;width:38px;height:38px;scroll-snap-align:center}
+    .side-label,.hint{display:none}
+    .screen{height:auto;min-height:100svh}
+    .art img,.pain-art img,.contact-art img{width:150%;height:100%;margin-left:-50%;opacity:.9;object-position:72% center}
+    .screen--pain .pain-art img{width:100%;margin-left:0;object-position:center}
+    .screen--pain .copy{width:calc(100% - 44px);margin-right:22px;margin-left:22px;text-align:center}
+    .screen--pain .section-title::before{margin-right:auto;margin-left:auto}
+    .screen--pain .copy>p{margin-right:auto;margin-left:auto}
+    .wide-art img{width:165%;margin-left:-56%;opacity:.62}
+    .hero-art img{width:150%;margin-left:-43%;opacity:.8;object-position:66% center}
+    .art::after,.hero-art::after{background:linear-gradient(180deg,rgba(1,3,6,.12),rgba(1,3,6,.58) 52%,#010306 100%)}
+    .content,.copy{
+      position:relative;top:auto;left:auto;transform:none;
+      width:calc(100% - 62px);min-height:100%;margin:0 18px 0 44px;padding:104px 0 54px;
+    }
+    .hero-copy{position:absolute;top:122px;left:39px;width:calc(100% - 62px);margin:0;padding:0;min-height:0}
+    .eyebrow{margin-bottom:18px;font-size:.7rem}
+    .hero-copy h1{max-width:330px;font-size:clamp(2.05rem,10vw,2.62rem);white-space:normal}
+    .hero-copy h1 span{display:block}
+    .hero-token{margin:12px 0 13px;font-size:clamp(3.3rem,17vw,4.45rem)}
+    .hero-summary{max-width:315px;font-size:.91rem;line-height:1.72}
+    .copy{padding-top:134px}
+    .section-title,.section-title.compact,.copy .section-title{font-size:clamp(2rem,10.3vw,2.85rem);line-height:1.15}
+    .section-title::before{width:54px;margin-bottom:17px}
+    .copy>p{margin-top:24px;font-size:.97rem;line-height:1.85}
+    .content>.section-title{margin-bottom:34px}
+    .screen--system .content::before{display:none}
+    .two-grid,.three-grid,.allocation-list,.capture-grid,.roadmap-grid{grid-template-columns:1fr}
+    .two-grid article,.two-grid article+article,.three-grid article,.three-grid article:first-child,.three-grid article:last-child,
+    .allocation-list article,.allocation-list article:first-child,.allocation-list article:last-child,
+    .capture-grid article,.capture-grid article+article,.roadmap-grid article,.roadmap-grid article:first-child,.roadmap-grid article:last-child{
+      min-height:0;padding:27px 0 31px;border-top:1px solid var(--line);border-right:0;border-bottom:0;border-left:0;
+    }
+    .number-mark{width:48px;height:48px;margin-bottom:21px}
+    .screen--pillars .number-mark{width:auto;height:auto;margin-bottom:18px;font-size:2.75rem}
+    .screen--roadmap .roadmap-grid{border-top:0}
+    .screen--roadmap .roadmap-grid article::before{display:none}
+    .allocation-list,.capture-grid,.roadmap-grid{border-top:0}
+    .allocation-value{font-size:3rem}
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" id="homeBtn" aria-label="回到首页"><svg viewBox="0 0 559 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M510.861 328.839C483.895 349.813 456.928 364.794 430.711 376.03C430.512 376.108 375.192 397.756 325.843 399.251C321.348 400 316.854 400 312.359 400C280.899 400 253.184 395.505 229.214 388.764C155.806 368.539 107.116 329.588 104.869 328.09L139.326 289.139C139.383 289.185 182.066 323.607 245.693 340.075C270.412 346.817 294.382 349.812 318.352 349.063C318.352 349.063 366.292 349.064 416.479 326.592C437.453 316.854 459.176 304.12 479.4 288.39L510.861 328.839ZM177.527 193.258C177.527 226.966 158.052 256.179 130.337 271.16C130.337 271.904 129.598 271.909 129.588 271.909C127.341 272.658 125.843 274.157 123.596 274.906C122.847 274.906 122.097 274.906 121.348 275.655C120.599 275.656 119.849 276.404 119.101 276.404C115.355 277.902 111.61 279.4 107.865 280.149C107.116 280.898 107.116 280.898 106.367 280.898C105.618 280.898 104.869 281.647 104.12 281.647C101.873 282.397 99.6251 283.146 97.3779 283.146H95.8799C93.6328 283.895 91.3857 283.895 88.3896 283.895C86.1425 283.895 83.8947 283.146 80.8984 283.146H79.4004C77.1533 282.397 74.9062 282.396 72.6592 281.647C71.9102 281.647 71.1611 280.899 70.4121 280.898C69.6632 280.149 69.6628 280.149 68.9141 280.149C29.2138 270.412 0 235.205 0 194.007V187.266H56.1797V192.509C56.1797 202.247 60.6745 210.487 67.416 216.479C68.9138 217.228 69.6632 217.978 71.1611 218.727C71.91 218.727 71.9102 219.476 72.6592 219.476C73.4083 220.225 74.9063 220.974 76.4043 221.723C77.1533 221.723 77.1534 222.472 77.9023 222.472C79.4004 223.221 80.8985 223.221 82.3965 223.97H83.8945C85.3927 224.719 86.8915 224.719 88.3896 224.719H93.6328C95.1309 223.97 96.6289 223.97 98.127 223.221C98.8759 223.221 98.8762 222.472 99.625 222.472C101.123 221.723 101.872 220.974 103.37 220.225C104.119 220.225 104.12 219.476 104.869 219.476C106.367 218.727 107.116 217.978 108.614 217.229C115.356 211.985 119.85 202.996 119.85 194.007V0H177.527V193.258ZM319.851 0.732422C400 0.732422 464.42 63.6532 464.42 141.556C464.42 219.458 400 282.38 319.851 282.38H281.648L276.405 283.129H229.215V0.732422H319.851ZM558.802 282.396H506.367V0H558.802V282.396ZM281.648 230.694H319.851C371.536 230.694 412.734 190.994 412.734 141.556C412.734 92.1176 370.787 52.417 319.851 52.417H281.648V230.694Z" fill="white"/>
+</svg></button>
+    <nav class="pager" id="pager" aria-label="页面导航"></nav>
+  </header>
+
+  <div class="side-label" id="sideLabel">01 / 09 · HOME</div>
+  <div class="hint"><span class="key">↑</span><span class="key">↓</span> SCROLL</div>
+  <div class="progress"><span id="bar"></span></div>
+
+  <main class="deck" id="deck">
+    <section class="screen screen--cover screen--hero" data-index="1" data-label="HOME">
+      <div class="art hero-art" aria-hidden="true"><img src="/assets/cinematic/coin-hero-guardian-v3.jpg" alt="" loading="eager" decoding="async" fetchpriority="high" /></div>
+      <div class="copy hero-copy">
+        <p class="eyebrow">JOINT DEFENCE INITIATIVE (JDI$)</p>
+        <h1><span>守卫正义的</span><span>散户防线</span></h1>
+        <span class="hero-token">JDI$</span>
+        <p class="hero-summary">全球首个集金融安全教育与集体维权于一体的变革性生态模型</p>
+      </div>
+    </section>
+
+    <section class="screen screen--cover screen--pain" data-index="2" data-label="PAIN">
+      <div class="art pain-art" aria-hidden="true"><img src="/assets/cinematic/pain-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="copy">
+        <h2 class="section-title pain-title"><span>痛点剖析：</span><span class="pdf-gold">跨境与信息鸿沟</span></h2>
+        <p>Web3项目方来自全球，投资人也来自全球，信息不对称极大，维权成本高，散户永远沦为金融骗局中的受害者。</p>
+      </div>
+    </section>
+
+    <section class="screen screen--system screen--mission" data-index="3" data-label="MISSION">
+      <div class="art wide-art" aria-hidden="true"><img src="/assets/cinematic/mission-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="content">
+        <h2 class="section-title"><span class="jdi-regular">JDI$</span>的使命：双轮驱动闭环</h2>
+        <div class="two-grid">
+          <article><div class="number-mark">01</div><h3>以学促防(Education)</h3><p>“生前投保”：通过系统的链上反诈骗教育与高阶投研分析，全方位提升散户的风险控制能力与项目辨别力，从源头消灭被割韭菜的可能性。</p></article>
+          <article><div class="number-mark">02</div><h3>以众筹权(Advocacy)</h3><p>“死后理赔”：一旦遭遇不可抗力损失，JDI$生态提供一站式的技术追踪（黑客追踪）和中介对接（集体诉讼），保障散户的正当权益。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--system screen--pillars" data-index="4" data-label="PILLARS">
+      <div class="art wide-art" aria-hidden="true"><img src="/assets/cinematic/dawn-collective.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="content">
+        <h2 class="section-title"><span class="jdi-regular">JDI$</span>的三大颠覆性产品支柱</h2>
+        <div class="three-grid">
+          <article><div class="number-mark">01</div><h3>L2E防守教育</h3><p>学以致赚模型。用户通过完成安全教育and风险防范测试获取代币奖励，实现真正的正向防御。</p></article>
+          <article><div class="number-mark">02</div><h3>链上正义追踪</h3><p>发布正义悬赏，让顶尖链上侦探提供跑路资金的流向分析报告，为后续法律诉讼定案提供铁证。</p></article>
+          <article><div class="number-mark">03</div><h3>众筹联合诉讼</h3><p>通过代币众筹律师费，并由JDI平台对接跨境集体诉讼律所，实现低成本、高威慑力的司法阻击。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--cover screen--token" data-index="5" data-label="TOKEN">
+      <div class="art" aria-hidden="true"><img src="/assets/cinematic/value-capture.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="copy">
+        <h2 class="section-title">代币经济：<span class="pdf-gold">正义的无限通缩</span></h2>
+        <p>JDI$代币不仅是生态系统的治理and支付凭证，更是与“正义胜利”深度绑定的通缩机制载体。</p>
+      </div>
+    </section>
+
+    <section class="screen screen--system screen--allocation" data-index="6" data-label="ALLOC">
+      <div class="art wide-art" aria-hidden="true"><img src="/assets/cinematic/token-allocation.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="content">
+        <h2 class="section-title"><span class="jdi-regular">JDI$</span><span class="allocation-title-line">通证分配架构</span></h2>
+        <div class="allocation-list">
+              <article><span class="allocation-value">40%</span><span class="allocation-label">项目举证与白帽黑客奖励</span></article>
+              <article><span class="allocation-value">20%</span><span class="allocation-label">教育平台激励/学习者奖励</span></article>
+              <article><span class="allocation-value">20%</span><span class="allocation-label">法律维权储备基金</span></article>
+              <article><span class="allocation-value">20%</span><span class="allocation-label">团队与流动性做市储备</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--deep screen--capture" data-index="7" data-label="VALUE">
+      <div class="art wide-art" aria-hidden="true"><img src="/assets/cinematic/value-loop.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="content">
+        <h2 class="section-title compact"><span class="jdi-regular">JDI$</span>的多维价值捕获与通缩闭环</h2>
+        <div class="capture-grid">
+          <article>
+            <h3>C端：诉讼发起与维权刚需</h3>
+            <p><strong>众筹发起费与诉讼结算：</strong>散户联合发起跨境集体诉讼或众筹诉讼费时，必须将$JDI$质押或全额支付。对接签约国际律所的一对一高级法律咨询，也必须以$JDI$统一支付。</p>
+            <p><strong>举证防伪与风控治理机制：</strong>为防止恶意爆料和女巫攻击，散户在JDI举证平台提交项目证据时需质押小额代币。通过验证可解锁收益，作恶则罚没，确保数据的权威真实性。</p>
+            <p><strong>胜诉强制回购销毁：</strong>当JDI$平台对接的集体诉讼成功，散户获得项目方赔偿或和解协议资金后，10%-20%的回款必须强制在二级市场回购并销毁JDI$。</p>
+          </article>
+          <article>
+            <h3>B端及生态：造血反哺与通缩</h3>
+            <p><strong>B端合规服务利润直接注入：</strong>优质Web3项目方为争取散户信任，付费向JDI平台申请合规评测和反欺诈审计。所得纯利润of 30%，强制用来在二级市场回购并直接销毁$JDI$。</p>
+            <p><strong>业务消耗与服务黑洞：</strong>B端付费项目审计费用、用户支付的解锁高阶安全课程费、一对一法律咨询费，其支付代币金额的20%直接销毁。其余80%重新灌入教育奖池，确保持续通缩。</p>
+            <p><strong>追赃索赔与资产追回抽成：</strong>通过平台白帽侦探成功追踪、拦截被盗赃款，或经跨境法律诉讼追回散户被骗资产后，平台提取挽回额的5%作为佣金，全额用于在市场回购并销毁，强力托底币价。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--system screen--roadmap" data-index="8" data-label="ROADMAP">
+      <div class="art wide-art" aria-hidden="true"><img src="/assets/cinematic/road-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="content">
+        <h2 class="section-title"><span class="jdi-regular">JDI$</span>业务落地推进路线图</h2>
+        <div class="roadmap-grid">
+          <article><h3>Q1 - 上线金融教育平台</h3><p>全面上线“学以致赚”底层网络，推出基础反诈、安全审计、避坑投研课程。冷启动阶段，聚焦教育流量蓄水池。</p></article>
+          <article><h3>Q2 - 投资者举证平台</h3><p>根据CoinMarketCap项目排名收录行业库。支持散户针对每个项目的项目方信息、可疑动态等贡献举证材料并共享信息，沉淀全网最真实的群智风控数据库。</p></article>
+          <article><h3>Q3 - 诉讼中介化</h3><p>代币众筹正式起航，平台作为去中心化隔离中介，将资金与链上铁证统一打包，对接跨境集体诉讼律所。</p></article>
+          <article><h3>Q4 - B端合规审计</h3><p>对正规优质项目发起反欺诈及合规评测并进行商业化变现，实现健康的B2B2C商业自造血。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--cover screen--join" data-index="9" data-label="JOIN">
+      <div class="art contact-art" aria-hidden="true"><img src="/assets/cinematic/final-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="copy">
+        <h2 class="section-title contact-title"><span>加入<span class="jdi-regular pdf-gold">JDI$</span>，</span><span>守护正义</span></h2>
+        <p>让散户拥有足以抗衡机构的武器，不再做案板上的鱼肉。</p>
+        <div class="contact-lines">
+          <a href="mailto:info@jdi-justice.io"><b aria-hidden="true">@</b><span>info@jdi-justice.io</span></a>
+          <div><b aria-hidden="true">W</b><span>www.jdi-justice.io</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <p class="sr-only" id="livePage" aria-live="polite">1 / 9</p>
+
+<script>
+const deck = document.getElementById('deck');
+const sections = [...document.querySelectorAll('.screen')];
+const pager = document.getElementById('pager');
+const bar = document.getElementById('bar');
+const sideLabel = document.getElementById('sideLabel');
+const livePage = document.getElementById('livePage');
+let current = 1;
+
+document.querySelectorAll('.art img').forEach((img) => {
+  if (img.complete) img.decode?.().catch(() => undefined);
+  else img.addEventListener('load', () => img.decode?.().catch(() => undefined), { once:true });
+});
+
+sections.forEach((sec, i) => {
+  const btn = document.createElement('button');
+  btn.textContent = String(i + 1).padStart(2, '0');
+  btn.setAttribute('aria-label', `前往第 ${i+1} 页`);
+  btn.addEventListener('click', () => sec.scrollIntoView({behavior:'smooth',block:'start'}));
+  pager.appendChild(btn);
+});
+
+const buttons = [...pager.querySelectorAll('button')];
+buttons[0].classList.add('active');
+
+function setActive(n) {
+  current = n;
+  buttons.forEach((b, i) => b.classList.toggle('active', i === n - 1));
+  const label = sections[n - 1].dataset.label;
+  sideLabel.textContent = `${String(n).padStart(2,'0')} / 09 · ${label}`;
+  bar.style.width = `${(n / sections.length) * 100}%`;
+  livePage.textContent = `${n} / ${sections.length}`;
+  if (window.matchMedia('(max-width:900px)').matches) {
+    const activeButton = buttons[n - 1];
+    const targetLeft = activeButton.offsetLeft - (pager.clientWidth - activeButton.offsetWidth) / 2;
+    pager.scrollTo({left:Math.max(0,targetLeft),behavior:'smooth'});
+  }
+}
+
+const observer = new IntersectionObserver((entries) => {
+  const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (visible) setActive(Number(visible.target.dataset.index));
+}, {root:deck,threshold:[0.55,0.8]});
+
+sections.forEach(sec => observer.observe(sec));
+
+document.getElementById('homeBtn').addEventListener('click', () => {
+  sections[0].scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+window.addEventListener('keydown', (e) => {
+  const forward = ['ArrowDown','ArrowRight','PageDown',' '];
+  const backward = ['ArrowUp','ArrowLeft','PageUp'];
+  if (forward.includes(e.key)) {
+    e.preventDefault();
+    sections[Math.min(current, sections.length - 1)].scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if (backward.includes(e.key)) {
+    e.preventDefault();
+    sections[Math.max(0, current - 2)].scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if (e.key === 'Home') {
+    e.preventDefault();
+    sections[0].scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if (e.key === 'End') {
+    e.preventDefault();
+    sections[sections.length - 1].scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+
+deck.scrollTop = 0;
+</script>
+</body>
+</html>
