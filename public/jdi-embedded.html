@@ -83,7 +83,6 @@
     width:48px;height:36px;display:grid;place-items:center;
   }
   .brand svg{display:block;width:auto;height:34px}
-  .topbar-actions{display:flex;align-items:center;gap:10px;min-width:0;pointer-events:auto}
   .pager{display:flex;align-items:center;gap:6px;pointer-events:auto}
   .pager button{
     width:28px;height:28px;border-radius:50%;
@@ -96,33 +95,7 @@
     background:var(--active);border-color:var(--active);color:#111418;
     box-shadow:0 0 20px rgba(240,173,36,.25);
   }
-  .language-switch{position:relative;flex:0 0 auto}
-  .language-trigger{
-    display:inline-flex;align-items:center;gap:9px;min-height:36px;padding:0 8px;
-    border:0;background:transparent;color:rgba(255,255,255,.72);
-    font-size:11px;font-weight:750;white-space:nowrap;cursor:pointer;transition:color .18s ease;
-  }
-  .language-trigger:hover{color:var(--gold-soft)}
-  .language-label-short{display:none}
-  .language-chevron{
-    width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
-    transform:translateY(-2px) rotate(45deg);transition:transform .18s ease;
-  }
-  .language-switch.is-open .language-chevron{transform:translateY(2px) rotate(225deg)}
-  .language-menu{
-    position:absolute;top:calc(100% + 7px);right:0;z-index:130;display:none;width:156px;
-    padding:6px;border:1px solid rgba(240,173,36,.25);background:rgba(6,10,15,.97);
-    box-shadow:0 18px 46px rgba(0,0,0,.48);backdrop-filter:blur(14px);
-  }
-  .language-switch.is-open .language-menu{display:grid}
-  .language-option{
-    width:100%;border:0;background:transparent;color:rgba(255,255,255,.62);
-    padding:10px 11px;text-align:left;font-size:11px;cursor:pointer;
-  }
-  .language-option:hover,.language-option:focus-visible,.language-option.is-active{
-    background:rgba(240,173,36,.1);color:#fff;
-  }
-  .brand:focus-visible,.pager button:focus-visible,.language-trigger:focus-visible,.language-option:focus-visible,.contact-lines a:focus-visible{
+  .brand:focus-visible,.pager button:focus-visible,.contact-lines a:focus-visible{
     outline:2px solid var(--active);outline-offset:3px;
   }
   .side-label{
@@ -402,52 +375,6 @@
   .contact-lines b{display:grid;place-items:center;width:24px;height:24px;border:1px solid rgba(240,173,36,.6);border-radius:50%;color:var(--gold-soft);font-size:.68rem}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-  html[lang="en"] body{font-family:Arial,"Helvetica Neue",sans-serif}
-  html[lang="en"] .hero-copy h1{font-size:clamp(2.8rem,4vw,4.15rem);letter-spacing:-.04em}
-  html[lang="en"] .section-title{line-height:1.06;letter-spacing:-.035em;text-wrap:balance}
-  html[lang="en"] .hero-summary,
-  html[lang="en"] article p,
-  html[lang="en"] .copy>p{text-wrap:pretty;orphans:2;widows:2}
-  html[lang="en"] article h3{line-height:1.28;text-wrap:balance}
-  html[lang="en"] article p{line-height:1.62}
-  html[lang="en"] .screen--capture .section-title{font-size:clamp(2.15rem,3vw,3.15rem)}
-  html[lang="en"] .screen--capture .capture-grid p{font-size:clamp(.77rem,.82vw,.87rem);line-height:1.5}
-  html[lang="en"] .screen--roadmap .roadmap-grid h3{font-size:clamp(.92rem,1.1vw,1.1rem)}
-  html[lang="en"] .screen--roadmap .roadmap-grid p{font-size:clamp(.78rem,.84vw,.9rem);line-height:1.58}
-
-  @media (min-width:901px){
-    html[lang="en"] .screen--hero .hero-copy{
-      left:8.4%;width:max-content;max-width:84vw;transform:translateY(-50%);
-      grid-template-columns:max-content 220px;grid-template-rows:auto auto auto auto;
-      column-gap:18px;
-    }
-    html[lang="en"] .screen--hero .eyebrow{grid-column:1/-1;grid-row:1}
-    html[lang="en"] .screen--hero .hero-copy h1{display:contents;white-space:normal}
-    html[lang="en"] .screen--hero .hero-copy h1 span:first-child{
-      grid-column:1/-1;grid-row:2;margin-right:0;line-height:1.04;
-    }
-    html[lang="en"] .screen--hero .hero-copy h1 span:nth-child(2){
-      grid-column:1;grid-row:3;line-height:1.04;white-space:normal;text-wrap:balance;
-    }
-    html[lang="en"] .screen--hero .hero-token{grid-column:2;grid-row:3;align-self:end;justify-self:start}
-    html[lang="en"] .screen--hero .hero-summary{grid-column:1/-1;grid-row:4;max-width:720px}
-  }
-
-  @media (min-width:1050px){
-    html[lang="en"] .screen--mission .content>.section-title{
-      max-width:none;font-size:clamp(2.2rem,3.05vw,3rem);
-    }
-    html[lang="en"] .screen--mission .two-grid h3{
-      font-size:clamp(.8rem,.88vw,.9rem);white-space:nowrap;text-wrap:nowrap;
-    }
-  }
-
-  @media (min-width:1500px){
-    html[lang="en"] .screen--mission .content{
-      grid-template-columns:minmax(520px,.82fr) minmax(0,1.18fr);gap:70px;
-    }
-  }
-
   @media (max-height:780px) and (min-width:901px){
     .content{padding-top:92px}
     .hero-copy{top:24%}
@@ -458,18 +385,13 @@
     .topbar{height:60px;padding:0 10px;gap:8px;overflow:hidden}
     .brand{flex:0 0 42px;width:42px;height:36px}
     .brand svg{height:30px}
-    .topbar-actions{flex:1 1 auto;gap:2px;min-width:0}
     .pager{
-      flex:1 1 auto;justify-content:flex-start;gap:7px;min-width:0;max-width:none;
+      flex:1 1 auto;justify-content:flex-start;gap:7px;max-width:calc(100vw - 62px);
       padding:8px 4px;overflow-x:auto;overscroll-behavior-x:contain;
       scroll-snap-type:x proximity;scrollbar-width:none;
     }
     .pager::-webkit-scrollbar{display:none}
     .pager button{flex:0 0 38px;width:38px;height:38px;scroll-snap-align:center}
-    .language-trigger{min-width:42px;padding:0 6px;justify-content:center}
-    .language-label{display:none}
-    .language-label-short{display:inline}
-    .language-menu{width:144px}
     .side-label,.hint{display:none}
     .screen{height:auto;min-height:100svh}
     .art img,.pain-art img,.contact-art img{width:150%;height:100%;margin-left:-50%;opacity:.9;object-position:72% center}
@@ -488,15 +410,10 @@
     .eyebrow{margin-bottom:18px;font-size:.7rem}
     .hero-copy h1{max-width:330px;font-size:clamp(2.05rem,10vw,2.62rem);white-space:normal}
     .hero-copy h1 span{display:block}
-    html[lang="en"] .hero-copy h1{font-size:clamp(1.95rem,8.6vw,2.25rem)}
-    html[lang="en"] .hero-copy h1 span:first-child{margin-right:0}
     .hero-token{margin:12px 0 13px;font-size:clamp(3.3rem,17vw,4.45rem)}
     .hero-summary{max-width:315px;font-size:.91rem;line-height:1.72}
     .copy{padding-top:134px}
     .section-title,.section-title.compact,.copy .section-title{font-size:clamp(2rem,10.3vw,2.85rem);line-height:1.15}
-    html[lang="en"] .section-title,
-    html[lang="en"] .section-title.compact,
-    html[lang="en"] .copy .section-title{font-size:clamp(1.7rem,7.2vw,1.75rem)}
     .section-title::before{width:54px;margin-bottom:17px}
     .copy>p{margin-top:24px;font-size:.97rem;line-height:1.85}
     .content>.section-title{margin-bottom:34px}
@@ -521,20 +438,7 @@
     <button class="brand" id="homeBtn" aria-label="回到首页"><svg viewBox="0 0 559 400" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M510.861 328.839C483.895 349.813 456.928 364.794 430.711 376.03C430.512 376.108 375.192 397.756 325.843 399.251C321.348 400 316.854 400 312.359 400C280.899 400 253.184 395.505 229.214 388.764C155.806 368.539 107.116 329.588 104.869 328.09L139.326 289.139C139.383 289.185 182.066 323.607 245.693 340.075C270.412 346.817 294.382 349.812 318.352 349.063C318.352 349.063 366.292 349.064 416.479 326.592C437.453 316.854 459.176 304.12 479.4 288.39L510.861 328.839ZM177.527 193.258C177.527 226.966 158.052 256.179 130.337 271.16C130.337 271.904 129.598 271.909 129.588 271.909C127.341 272.658 125.843 274.157 123.596 274.906C122.847 274.906 122.097 274.906 121.348 275.655C120.599 275.656 119.849 276.404 119.101 276.404C115.355 277.902 111.61 279.4 107.865 280.149C107.116 280.898 107.116 280.898 106.367 280.898C105.618 280.898 104.869 281.647 104.12 281.647C101.873 282.397 99.6251 283.146 97.3779 283.146H95.8799C93.6328 283.895 91.3857 283.895 88.3896 283.895C86.1425 283.895 83.8947 283.146 80.8984 283.146H79.4004C77.1533 282.397 74.9062 282.396 72.6592 281.647C71.9102 281.647 71.1611 280.899 70.4121 280.898C69.6632 280.149 69.6628 280.149 68.9141 280.149C29.2138 270.412 0 235.205 0 194.007V187.266H56.1797V192.509C56.1797 202.247 60.6745 210.487 67.416 216.479C68.9138 217.228 69.6632 217.978 71.1611 218.727C71.91 218.727 71.9102 219.476 72.6592 219.476C73.4083 220.225 74.9063 220.974 76.4043 221.723C77.1533 221.723 77.1534 222.472 77.9023 222.472C79.4004 223.221 80.8985 223.221 82.3965 223.97H83.8945C85.3927 224.719 86.8915 224.719 88.3896 224.719H93.6328C95.1309 223.97 96.6289 223.97 98.127 223.221C98.8759 223.221 98.8762 222.472 99.625 222.472C101.123 221.723 101.872 220.974 103.37 220.225C104.119 220.225 104.12 219.476 104.869 219.476C106.367 218.727 107.116 217.978 108.614 217.229C115.356 211.985 119.85 202.996 119.85 194.007V0H177.527V193.258ZM319.851 0.732422C400 0.732422 464.42 63.6532 464.42 141.556C464.42 219.458 400 282.38 319.851 282.38H281.648L276.405 283.129H229.215V0.732422H319.851ZM558.802 282.396H506.367V0H558.802V282.396ZM281.648 230.694H319.851C371.536 230.694 412.734 190.994 412.734 141.556C412.734 92.1176 370.787 52.417 319.851 52.417H281.648V230.694Z" fill="white"/>
 </svg></button>
-    <div class="topbar-actions">
-      <nav class="pager" id="pager" aria-label="页面导航"></nav>
-      <div class="language-switch" id="languageSwitch">
-        <button class="language-trigger" id="languageTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="languageMenu">
-          <span class="language-label" id="languageLabel">中文（简体）</span>
-          <span class="language-label-short" id="languageLabelShort">中</span>
-          <span class="language-chevron" aria-hidden="true"></span>
-        </button>
-        <div class="language-menu" id="languageMenu" role="listbox" aria-label="选择语言">
-          <button class="language-option is-active" type="button" role="option" aria-selected="true" data-lang="zh-CN">中文（简体）</button>
-          <button class="language-option" type="button" role="option" aria-selected="false" data-lang="en">English</button>
-        </div>
-      </div>
-    </div>
+    <nav class="pager" id="pager" aria-label="页面导航"></nav>
   </header>
 
   <div class="side-label" id="sideLabel">01 / 09 · HOME</div>
@@ -659,116 +563,7 @@ const pager = document.getElementById('pager');
 const bar = document.getElementById('bar');
 const sideLabel = document.getElementById('sideLabel');
 const livePage = document.getElementById('livePage');
-const languageSwitch = document.getElementById('languageSwitch');
-const languageTrigger = document.getElementById('languageTrigger');
-const languageLabel = document.getElementById('languageLabel');
-const languageLabelShort = document.getElementById('languageLabelShort');
-const languageMenu = document.getElementById('languageMenu');
-const languageOptions = [...document.querySelectorAll('.language-option')];
 let current = 1;
-
-const englishTranslations = {
-  "守卫正义的": "Defending Justice:",
-  "散户防线": "The Retail Frontline",
-  "全球首个集金融安全教育与集体维权于一体的变革性生态模型": "The world's first transformative ecosystem integrating financial security education with collective rights protection.",
-  "痛点剖析：": "Pain Points:",
-  "跨境与信息鸿沟": "Cross-Border and Information Gaps",
-  "Web3项目方来自全球，投资人也来自全球，信息不对称极大，维权成本高，散户永远沦为金融骗局中的受害者。": "Web3 projects and investors are global, yet severe information asymmetry and high enforcement costs leave retail investors trapped as the victims of financial fraud.",
-  "的使命：双轮驱动闭环": "'s Mission: A Dual-Engine Flywheel",
-  "以学促防(Education)": "Education-Led Prevention",
-  "“生前投保”：通过系统的链上反诈骗教育与高阶投研分析，全方位提升散户的风险控制能力与项目辨别力，从源头消灭被割韭菜的可能性。": "“Pre-Incident Protection”: Systematic on-chain anti-fraud education and advanced investment research strengthen retail investors' risk controls and project-screening skills, stopping exploitation at the source.",
-  "以众筹权(Advocacy)": "Crowdfunded Advocacy",
-  "“死后理赔”：一旦遭遇不可抗力损失，JDI$生态提供一站式的技术追踪（黑客追踪）和中介对接（集体诉讼），保障散户的正当权益。": "“Post-Loss Recovery”: When unavoidable losses occur, the JDI$ ecosystem provides one-stop technical tracing and collective-litigation coordination to protect retail investors' legitimate rights.",
-  "的三大颠覆性产品支柱": "'s Three Disruptive Product Pillars",
-  "L2E防守教育": "L2E Defensive Education",
-  "学以致赚模型。用户通过完成安全教育and风险防范测试获取代币奖励，实现真正的正向防御。": "A learn-to-earn model that rewards users with tokens for completing security education and risk-prevention assessments, turning learning into proactive defense.",
-  "链上正义追踪": "On-Chain Justice Tracing",
-  "发布正义悬赏，让顶尖链上侦探提供跑路资金的流向分析报告，为后续法律诉讼定案提供铁证。": "Justice bounties mobilize leading on-chain investigators to trace stolen funds and deliver evidence-grade flow analysis for future legal action.",
-  "众筹联合诉讼": "Crowdfunded Collective Litigation",
-  "通过代币众筹律师费，并由JDI平台对接跨境集体诉讼律所，实现低成本、高威慑力的司法阻击。": "Token-funded legal fees and JDI-coordinated cross-border class-action firms create a lower-cost, high-deterrence path to justice.",
-  "代币经济：": "Token Economy: ",
-  "正义的无限通缩": "Perpetual Deflation for Justice",
-  "JDI$代币不仅是生态系统的治理and支付凭证，更是与“正义胜利”深度绑定的通缩机制载体。": "JDI$ is not only the ecosystem's governance and payment token; it is also a deflationary mechanism deeply tied to victories for justice.",
-  "通证分配架构": " Token Allocation Architecture",
-  "项目举证与白帽黑客奖励": "Project Evidence and White-Hat Rewards",
-  "教育平台激励/学习者奖励": "Education Platform / Learner Rewards",
-  "法律维权储备基金": "Legal Rights Protection Reserve",
-  "团队与流动性做市储备": "Team and Market-Making Reserve",
-  "的多维价值捕获与通缩闭环": "'s Multi-Dimensional Value Capture and Deflationary Flywheel",
-  "C端：诉讼发起与维权刚需": "Retail: Essential Litigation and Rights Protection",
-  "众筹发起费与诉讼结算：": "Crowdfunding Fees and Litigation Settlement: ",
-  "散户联合发起跨境集体诉讼或众筹诉讼费时，必须将$JDI$质押或全额支付。对接签约国际律所的一对一高级法律咨询，也必须以$JDI$统一支付。": "When retail investors launch cross-border collective litigation or crowdfund legal fees, they must stake or pay in JDI$. One-to-one consultations with contracted international law firms are also settled exclusively in JDI$.",
-  "举证防伪与风控治理机制：": "Evidence Integrity and Risk Governance: ",
-  "为防止恶意爆料和女巫攻击，散户在JDI举证平台提交项目证据时需质押小额代币。通过验证可解锁收益，作恶则罚没，确保数据的权威真实性。": "To deter malicious reports and Sybil attacks, contributors stake a small amount of tokens when submitting evidence. Verified submissions unlock rewards; misconduct is penalized, preserving data integrity and authority.",
-  "胜诉强制回购销毁：": "Mandatory Buyback and Burn After Victory: ",
-  "当JDI$平台对接的集体诉讼成功，散户获得项目方赔偿或和解协议资金后，10%-20%的回款必须强制在二级市场回购并销毁JDI$。": "When JDI$-coordinated collective litigation succeeds, 10%–20% of compensation or settlement proceeds must be used to buy back and burn JDI$ on the secondary market.",
-  "B端及生态：造血反哺与通缩": "B2B & Ecosystem: Revenue, Reinvestment and Deflation",
-  "B端合规服务利润直接注入：": "Compliance Service Profits: ",
-  "优质Web3项目方为争取散户信任，付费向JDI平台申请合规评测和反欺诈审计。所得纯利润of 30%，强制用来在二级市场回购并直接销毁$JDI$。": "Quality Web3 projects pay JDI for compliance assessments and anti-fraud audits to earn retail trust. Thirty percent of net profit is used to buy back and burn JDI$ on the secondary market.",
-  "业务消耗与服务黑洞：": "Service Consumption Sink: ",
-  "B端付费项目审计费用、用户支付的解锁高阶安全课程费、一对一法律咨询费，其支付代币金额的20%直接销毁。其余80%重新灌入教育奖池，确保持续通缩。": "Twenty percent of tokens paid for project audits, advanced security courses, and one-to-one legal consultations is burned. The remaining 80% returns to the education reward pool, sustaining deflation.",
-  "追赃索赔与资产追回抽成：": "Asset Recovery Commission: ",
-  "通过平台白帽侦探成功追踪、拦截被盗赃款，或经跨境法律诉讼追回散户被骗资产后，平台提取挽回额的5%作为佣金，全额用于在市场回购并销毁，强力托底币价。": "After white-hat investigators trace stolen funds or cross-border litigation recovers victims' assets, the platform takes a 5% recovery commission and uses it entirely for market buybacks and burns.",
-  "业务落地推进路线图": " Execution Plan & Roadmap",
-  "Q1 - 上线金融教育平台": "Q1 - Financial Education Launch",
-  "全面上线“学以致赚”底层网络，推出基础反诈、安全审计、避坑投研课程。冷启动阶段，聚焦教育流量蓄水池。": "Launch the full learn-to-earn network with foundational anti-fraud, security-audit, and risk-aware investment courses. The cold-start phase focuses on building education-driven reach.",
-  "Q2 - 投资者举证平台": "Q2 - Investor Evidence Platform",
-  "根据CoinMarketCap项目排名收录行业库。支持散户针对每个项目的项目方信息、可疑动态等贡献举证材料并共享信息，沉淀全网最真实的群智风控数据库。": "Build an industry database based on CoinMarketCap rankings. Retail investors contribute and share evidence on project teams and suspicious activity, creating a trusted crowd-sourced risk intelligence base.",
-  "Q3 - 诉讼中介化": "Q3 - Litigation Coordination",
-  "代币众筹正式起航，平台作为去中心化隔离中介，将资金与链上铁证统一打包，对接跨境集体诉讼律所。": "Token crowdfunding begins. The platform acts as a decentralized, neutral intermediary, packaging funding and on-chain evidence for cross-border collective-litigation firms.",
-  "Q4 - B端合规审计": "Q4 - B2B Compliance Audits",
-  "对正规优质项目发起反欺诈及合规评测并进行商业化变现，实现健康的B2B2C商业自造血。": "Commercialize anti-fraud and compliance assessments for legitimate quality projects, creating a healthy self-sustaining B2B2C model.",
-  "加入": "Join ",
-  "，": ",",
-  "守护正义": "Defend Justice",
-  "让散户拥有足以抗衡机构的武器，不再做案板上的鱼肉。": "Give retail investors the tools to stand up to institutions—and never be powerless again."
-};
-
-const textBindings = [];
-const collectTextBindings = (element) => {
-  if (element.matches?.('.language-switch')) return;
-  element.childNodes.forEach((node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const key = node.nodeValue.trim();
-      if (!englishTranslations[key]) return;
-      const prefix = node.nodeValue.match(/^\s*/)?.[0] || '';
-      const suffix = node.nodeValue.match(/\s*$/)?.[0] || '';
-      textBindings.push({node,key,prefix,suffix});
-      return;
-    }
-    if (node.nodeType === Node.ELEMENT_NODE) collectTextBindings(node);
-  });
-};
-
-collectTextBindings(document.body);
-
-const closeLanguageMenu = () => {
-  languageSwitch.classList.remove('is-open');
-  languageTrigger.setAttribute('aria-expanded','false');
-};
-
-const setLanguage = (language) => {
-  const english = language === 'en';
-  const activeLanguage = english ? 'en' : 'zh-CN';
-  document.documentElement.lang = activeLanguage;
-  textBindings.forEach(({node,key,prefix,suffix}) => {
-    node.nodeValue = `${prefix}${english ? englishTranslations[key] : key}${suffix}`;
-  });
-  document.getElementById('homeBtn').setAttribute('aria-label',english ? 'Back to home' : '回到首页');
-  pager.setAttribute('aria-label',english ? 'Page navigation' : '页面导航');
-  languageMenu.setAttribute('aria-label',english ? 'Select language' : '选择语言');
-  languageLabel.textContent = english ? 'English' : '中文（简体）';
-  languageLabelShort.textContent = english ? 'EN' : '中';
-  languageOptions.forEach((option) => {
-    const selected = option.dataset.lang === activeLanguage;
-    option.classList.toggle('is-active',selected);
-    option.setAttribute('aria-selected',String(selected));
-  });
-  [...pager.querySelectorAll('button')].forEach((button,index) => {
-    button.setAttribute('aria-label',english ? `Go to page ${index+1}` : `前往第 ${index+1} 页`);
-  });
-  try { localStorage.setItem('jdi-language',activeLanguage); } catch {}
-};
 
 document.querySelectorAll('.art img').forEach((img) => {
   if (img.complete) img.decode?.().catch(() => undefined);
@@ -785,32 +580,6 @@ sections.forEach((sec, i) => {
 
 const buttons = [...pager.querySelectorAll('button')];
 buttons[0].classList.add('active');
-
-languageTrigger.addEventListener('click', () => {
-  const open = languageSwitch.classList.toggle('is-open');
-  languageTrigger.setAttribute('aria-expanded',String(open));
-});
-
-languageOptions.forEach((option) => {
-  option.addEventListener('click', () => {
-    setLanguage(option.dataset.lang);
-    closeLanguageMenu();
-  });
-});
-
-document.addEventListener('click', (event) => {
-  if (!languageSwitch.contains(event.target)) closeLanguageMenu();
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') closeLanguageMenu();
-});
-
-let savedLanguage = 'zh-CN';
-try {
-  if (localStorage.getItem('jdi-language') === 'en') savedLanguage = 'en';
-} catch {}
-setLanguage(savedLanguage);
 
 function setActive(n) {
   current = n;
@@ -838,7 +607,6 @@ document.getElementById('homeBtn').addEventListener('click', () => {
 });
 
 window.addEventListener('keydown', (e) => {
-  if (languageSwitch.contains(e.target)) return;
   const forward = ['ArrowDown','ArrowRight','PageDown',' '];
   const backward = ['ArrowUp','ArrowLeft','PageUp'];
   if (forward.includes(e.key)) {
