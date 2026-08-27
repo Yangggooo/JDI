@@ -4,20 +4,20 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>JDI$</title>
-<link rel="preload" as="image" href="assets/cinematic/coin-hero-guardian-v3.jpg" />
+<link rel="preload" as="image" href="assets/cinematic/coin-hero-guardian-sacred-v1.png" />
 <link rel="preload" as="image" href="assets/cinematic/pain-guardian.jpg" />
-<link rel="preload" as="image" href="assets/cinematic/mission-guardian.jpg" />
+<link rel="preload" as="image" href="assets/cinematic/mission-guardian-sacred-v1.png" />
 <link rel="preload" as="image" href="assets/cinematic/dawn-collective.jpg" />
 <link rel="preload" as="image" href="assets/cinematic/value-capture.jpg" />
 <link rel="preload" as="image" href="assets/cinematic/token-allocation.jpg" />
 <link rel="preload" as="image" href="assets/cinematic/value-loop.jpg" />
 <link rel="preload" as="image" href="assets/cinematic/road-guardian.jpg" />
-<link rel="preload" as="image" href="assets/cinematic/final-guardian.jpg" />
+<link rel="preload" as="image" href="assets/cinematic/final-guardian-sacred-v1.png" />
 <style>
   :root {
     --bg:#070d14;
     --text:rgba(255,255,255,.92);
-    --muted:rgba(255,255,255,.58);
+    --muted:rgba(255,255,255,.48);
     --active:#f0ad24;
     --gold:#f0ad24;
     --gold-soft:#f0ad24;
@@ -154,7 +154,7 @@
     padding:112px 0 62px;
   }
   .copy{position:absolute;z-index:2;top:50%;left:max(5.5%,56px);width:min(700px,53%);transform:translateY(-45%)}
-  .eyebrow{margin:0 0 28px;color:#a9adb4;font-size:clamp(.72rem,1vw,.95rem);font-weight:800;letter-spacing:.025em}
+  .eyebrow{margin:0 0 24px;color:var(--gold);font-size:clamp(.72rem,1vw,.95rem);font-weight:700;letter-spacing:.025em}
   h1,h2,h3,p{margin-top:0}
   .hero-copy{top:29%;transform:none}
   .hero-copy h1{
@@ -168,7 +168,37 @@
     font-size:clamp(3.5rem,5.5vw,5.3rem);font-weight:950;line-height:.98;
     letter-spacing:-.065em;text-shadow:0 0 34px rgba(240,173,36,.3);
   }
-  .hero-summary{max-width:650px;margin:0;color:#c2c3c5;font-size:clamp(.96rem,1.18vw,1.16rem);line-height:1.65}
+  .hero-summary{max-width:650px;margin:0;color:#aeb0b3;font-size:clamp(.96rem,1.18vw,1.16rem);line-height:1.65}
+  .hero-credentials{
+    position:absolute;z-index:3;top:62.6%;left:max(5.7%,56px);
+    display:grid;grid-template-columns:.96fr 1.04fr;gap:0;
+    width:min(880px,60vw);overflow:hidden;
+    border:1px solid transparent;border-radius:10px;
+    background:
+      radial-gradient(circle at 91% 48%,rgba(240,173,36,.07),transparent 24%) padding-box,
+      linear-gradient(100deg,rgba(4,6,8,.78) 0%,rgba(5,7,9,.72) 52%,rgba(8,10,12,.56) 100%) padding-box,
+      linear-gradient(90deg,rgba(240,173,36,.3),rgba(240,173,36,.09) 32%,rgba(240,173,36,.05) 67%,rgba(240,173,36,.21)) border-box;
+    box-shadow:0 0 26px rgba(240,173,36,.09),inset 0 1px 0 rgba(255,222,144,.07);
+    backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+  }
+  .hero-credential{
+    display:grid;grid-template-columns:48px minmax(0,1fr);align-items:start;align-content:center;gap:16px;
+    min-height:118px;padding:13px 20px;
+    border:0;border-radius:0;background:transparent;box-shadow:none;
+  }
+  .hero-credential+ .hero-credential{position:relative;border-left:0}
+  .hero-credential+ .hero-credential::before{
+    content:"";position:absolute;top:10px;bottom:10px;left:0;width:1px;
+    background:linear-gradient(180deg,rgba(240,173,36,.12) 0%,rgba(240,173,36,.26) 48%,rgba(240,173,36,.1) 82%,transparent 100%);
+  }
+  .hero-credential img{display:block;align-self:center;width:43px;height:43px;margin:0;object-fit:contain}
+  .hero-credential h3{
+    margin:0 0 4px;color:var(--gold-soft);font-size:clamp(.82rem,.92vw,.94rem);
+    font-weight:800;line-height:1.2;letter-spacing:.01em;text-shadow:none;
+  }
+  .hero-credential p{
+    margin:0;color:#aeb0b3;font-size:clamp(.72rem,.78vw,.82rem);line-height:1.72;text-shadow:none;
+  }
   .section-title{
     max-width:920px;margin:0;color:#fff;
     font-size:clamp(2.65rem,4.15vw,4.35rem);font-weight:950;line-height:1.15;
@@ -184,7 +214,7 @@
   .contact-title>span{display:block}
   .jdi-regular{font-weight:inherit}
   .pdf-gold{color:var(--gold-soft)}
-  .copy>p{max-width:610px;margin:27px 0 0;color:#d0d1d3;font-size:clamp(1rem,1.2vw,1.17rem);line-height:1.9}
+  .copy>p{max-width:610px;margin:27px 0 0;color:#b5b7ba;font-size:clamp(1rem,1.2vw,1.17rem);line-height:1.9}
   .content>.section-title{margin-bottom:clamp(40px,6vh,68px)}
 
   /* Three page families: cinematic covers, structured systems and one dense deep-dive. */
@@ -204,7 +234,7 @@
   .three-grid article:first-child{padding-left:0}
   .three-grid article:last-child{padding-right:0;border-right:0}
   article h3{margin:0 0 22px;color:var(--gold-soft);font-size:clamp(1.08rem,1.38vw,1.35rem);line-height:1.4}
-  article p{margin:0;color:#cdd0d3;font-size:clamp(.9rem,1vw,1rem);line-height:1.78;text-shadow:0 2px 8px #000}
+  article p{margin:0;color:#b5b8bb;font-size:clamp(.9rem,1vw,1rem);line-height:1.78;text-shadow:0 2px 8px #000}
   .number-mark{
     display:grid;place-items:center;width:54px;height:54px;margin-bottom:28px;
     border:1px solid rgba(240,173,36,.52);border-radius:50%;
@@ -216,7 +246,7 @@
   .allocation-list article:first-child{padding-left:0}
   .allocation-list article:last-child{padding-right:0;border-right:0}
   .allocation-value{display:block;margin-bottom:24px;color:var(--gold-soft);font-size:clamp(2.7rem,4vw,4.3rem);font-weight:950;line-height:1}
-  .allocation-label{color:#d1d2d4;font-size:clamp(.9rem,1vw,1rem);line-height:1.7}
+  .allocation-label{color:#b3b5b8;font-size:clamp(.9rem,1vw,1rem);line-height:1.7}
   .capture-grid{grid-template-columns:repeat(2,minmax(0,1fr));border-top:2px solid var(--line)}
   .capture-grid article{padding:28px 42px 0 0}
   .capture-grid article+article{padding-right:0;padding-left:42px;border-left:1px solid var(--line)}
@@ -290,6 +320,7 @@
     .screen--hero .eyebrow,.screen--hero .hero-summary{justify-self:start}
     .screen--hero .hero-token{margin:0 0 3px -.025em}
     .screen--hero .hero-summary{margin-top:18px}
+    .screen--hero .hero-copy{top:29.3%;left:5.9%;transform:none}
 
     .screen--pain .pain-art img{transform:none;object-position:center}
     .screen--pain .pain-art::after{
@@ -397,7 +428,7 @@
     .screen--join .contact-lines{display:grid;justify-content:start;gap:17px}
   }
   .contact-lines{display:grid;gap:17px;margin-top:34px}
-  .contact-lines a,.contact-lines div{display:flex;align-items:center;gap:14px;width:fit-content;color:#d6d5d0;font-size:.96rem;text-decoration:none}
+  .contact-lines a,.contact-lines div{display:flex;align-items:center;gap:14px;width:fit-content;color:#bcbcb8;font-size:.96rem;text-decoration:none}
   .screen--join .contact-lines a,.screen--join .contact-lines div{color:var(--gold-soft)}
   .contact-lines b{display:grid;place-items:center;width:24px;height:24px;border:1px solid rgba(240,173,36,.6);border-radius:50%;color:var(--gold-soft);font-size:.68rem}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -406,6 +437,7 @@
   html[lang="en"] .hero-copy h1{font-size:clamp(2.8rem,4vw,4.15rem);letter-spacing:-.04em}
   html[lang="en"] .section-title{line-height:1.06;letter-spacing:-.035em;text-wrap:balance}
   html[lang="en"] .hero-summary,
+  html[lang="en"] .hero-credential p,
   html[lang="en"] article p,
   html[lang="en"] .copy>p{text-wrap:pretty;orphans:2;widows:2}
   html[lang="en"] article h3{line-height:1.28;text-wrap:balance}
@@ -431,6 +463,8 @@
     }
     html[lang="en"] .screen--hero .hero-token{grid-column:2;grid-row:3;align-self:end;justify-self:start}
     html[lang="en"] .screen--hero .hero-summary{grid-column:1/-1;grid-row:4;max-width:720px}
+    html[lang="en"] .screen--hero .hero-copy{top:27%;left:5.9%;transform:none}
+    html[lang="en"] .screen--hero .hero-credentials{top:66.5%;width:min(960px,64vw)}
   }
 
   @media (min-width:1050px){
@@ -492,6 +526,17 @@
     html[lang="en"] .hero-copy h1 span:first-child{margin-right:0}
     .hero-token{margin:12px 0 13px;font-size:clamp(3.3rem,17vw,4.45rem)}
     .hero-summary{max-width:315px;font-size:.91rem;line-height:1.72}
+    .screen--hero{min-height:1040px}
+    .hero-credentials{
+      position:relative;top:auto;left:auto;grid-template-columns:1fr;gap:14px;
+      width:calc(100% - 44px);margin:600px 22px 44px;
+    }
+    .hero-credential{grid-template-columns:50px minmax(0,1fr);gap:14px;min-height:0;padding:15px 17px;border-radius:0}
+    .hero-credential+ .hero-credential{border-left:0;border-top:0}
+    .hero-credential+ .hero-credential::before{top:0;right:14px;bottom:auto;left:14px;width:auto;height:1px;background:linear-gradient(90deg,transparent,rgba(240,173,36,.2) 16%,rgba(240,173,36,.2) 84%,transparent)}
+    .hero-credential img{width:48px;height:48px}
+    .hero-credential h3{font-size:.9rem}
+    .hero-credential p{font-size:.78rem;line-height:1.65}
     .copy{padding-top:134px}
     .section-title,.section-title.compact,.copy .section-title{font-size:clamp(2rem,10.3vw,2.85rem);line-height:1.15}
     html[lang="en"] .section-title,
@@ -543,12 +588,28 @@
 
   <main class="deck" id="deck">
     <section class="screen screen--cover screen--hero" data-index="1" data-label="HOME">
-      <div class="art hero-art" aria-hidden="true"><img src="assets/cinematic/coin-hero-guardian-v3.jpg" alt="" loading="eager" decoding="async" fetchpriority="high" /></div>
+      <div class="art hero-art" aria-hidden="true"><img src="assets/cinematic/coin-hero-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" fetchpriority="high" /></div>
       <div class="copy hero-copy">
         <p class="eyebrow">JOINT DEFENCE INITIATIVE (JDI$)</p>
         <h1><span>守卫正义的</span><span>散户防线</span></h1>
         <span class="hero-token">JDI$</span>
         <p class="hero-summary">全球首个集金融安全教育与集体维权于一体的变革性生态模型</p>
+      </div>
+      <div class="hero-credentials" aria-label="项目背景">
+        <article class="hero-credential">
+          <img src="assets/icons/shield-star-gold.svg" alt="" aria-hidden="true" />
+          <div>
+            <h3>JDI FORCE</h3>
+            <p>JDI Force 是 JDI Venture 发起的安全项目，旨在解决 Crypto 行业维权难的问题。</p>
+          </div>
+        </article>
+        <article class="hero-credential">
+          <img src="assets/icons/venture-medal-gold.svg" alt="" aria-hidden="true" />
+          <div>
+            <h3>JDI VENTURE</h3>
+            <p>JDI Venture 是 Helium、Mask Network、DFINITY、Chiliz 等项目的投资人，累计投出超过 5000 万美金。</p>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -561,7 +622,7 @@
     </section>
 
     <section class="screen screen--system screen--mission" data-index="3" data-label="MISSION">
-      <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/mission-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/mission-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" /></div>
       <div class="content">
         <h2 class="section-title"><span class="jdi-regular">JDI$</span>的使命：双轮驱动闭环</h2>
         <div class="two-grid">
@@ -639,7 +700,7 @@
     </section>
 
     <section class="screen screen--cover screen--join" data-index="9" data-label="JOIN">
-      <div class="art contact-art" aria-hidden="true"><img src="assets/cinematic/final-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
+      <div class="art contact-art" aria-hidden="true"><img src="assets/cinematic/final-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" /></div>
       <div class="copy">
         <h2 class="section-title contact-title"><span>加入<span class="jdi-regular pdf-gold">JDI$</span>，</span><span>守护正义</span></h2>
         <p>让散户拥有足以抗衡机构的武器，不再做案板上的鱼肉。</p>
@@ -671,6 +732,8 @@ const englishTranslations = {
   "守卫正义的": "Defending Justice:",
   "散户防线": "The Retail Frontline",
   "全球首个集金融安全教育与集体维权于一体的变革性生态模型": "The world's first transformative ecosystem integrating financial security education with collective rights protection.",
+  "JDI Force 是 JDI Venture 发起的安全项目，旨在解决 Crypto 行业维权难的问题。": "JDI Force is a security initiative launched by JDI Venture to address the challenges of rights protection in the crypto industry.",
+  "JDI Venture 是 Helium、Mask Network、DFINITY、Chiliz 等项目的投资人，累计投出超过 5000 万美金。": "JDI Venture is an investor in Helium, Mask Network, DFINITY, Chiliz and other projects, with over US$50 million invested.",
   "痛点剖析：": "Pain Points:",
   "跨境与信息鸿沟": "Cross-Border Barriers and Information Gaps",
   "Web3项目方来自全球，投资人也来自全球，信息不对称极大，维权成本高，散户永远沦为金融骗局中的受害者。": "Web3 projects and investors are global, yet severe information asymmetry and high enforcement costs leave retail investors trapped as the victims of financial fraud.",
