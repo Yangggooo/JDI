@@ -163,7 +163,9 @@
     font-weight:950;line-height:1.15;letter-spacing:-.015em;white-space:nowrap;
     text-shadow:0 4px 24px #000;
   }
-  .hero-copy h1 span{display:inline}
+  .hero-copy h1>span{display:block}
+  .hero-copy h1>span .pdf-gold{display:inline}
+  html[lang="zh-CN"] .screen--hero .hero-copy h1>span{display:inline}
   .hero-token{
     display:block;margin:17px 0 16px;color:var(--gold);
     font-size:clamp(3.5rem,5.5vw,5.3rem);font-weight:950;line-height:.98;
@@ -450,22 +452,20 @@
 
   @media (min-width:901px){
     html[lang="en"] .screen--hero .hero-copy{
-      left:8.4%;width:max-content;max-width:84vw;transform:translateY(-50%);
-      grid-template-columns:max-content 220px;grid-template-rows:auto auto auto auto;
-      column-gap:18px;
+      left:5.9%;width:max-content;max-width:84vw;transform:none;
+      grid-template-columns:max-content;grid-template-rows:auto auto auto;
     }
     html[lang="en"] .screen--hero .eyebrow{grid-column:1/-1;grid-row:1}
-    html[lang="en"] .screen--hero .hero-copy h1{display:contents;white-space:normal}
+    html[lang="en"] .screen--hero .hero-copy h1{display:block;grid-column:1/-1;grid-row:2;white-space:normal}
     html[lang="en"] .screen--hero .hero-copy h1 span:first-child{
-      grid-column:1/-1;grid-row:2;margin-right:0;line-height:1.04;
+      margin-right:0;line-height:1.04;
     }
     html[lang="en"] .screen--hero .hero-copy h1 span:nth-child(2){
-      grid-column:1;grid-row:3;line-height:1.04;white-space:normal;text-wrap:balance;
+      line-height:1.04;white-space:normal;text-wrap:balance;
     }
-    html[lang="en"] .screen--hero .hero-token{grid-column:2;grid-row:3;align-self:end;justify-self:start}
-    html[lang="en"] .screen--hero .hero-summary{grid-column:1/-1;grid-row:4;max-width:720px}
-    html[lang="en"] .screen--hero .hero-copy{top:27%;left:5.9%;transform:none}
-    html[lang="en"] .screen--hero .hero-credentials{top:66.5%;width:min(960px,64vw)}
+    html[lang="en"] .screen--hero .hero-summary{grid-column:1/-1;grid-row:3;max-width:720px}
+    html[lang="en"] .screen--hero .hero-copy{top:26.225%;left:5.9%;transform:none}
+    html[lang="en"] .screen--hero .hero-credentials{top:65.725%;width:min(960px,64vw)}
   }
 
   @media (min-width:1050px){
@@ -592,8 +592,7 @@
       <div class="art hero-art" aria-hidden="true"><img src="assets/cinematic/coin-hero-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" fetchpriority="high" /></div>
       <div class="copy hero-copy">
         <p class="eyebrow">JOINT DEFENCE INITIATIVE (JDI$)</p>
-        <h1><span>守卫正义的</span><span>散户防线</span></h1>
-        <span class="hero-token">JDI$</span>
+        <h1><span>加入<span class="jdi-regular pdf-gold">JDI$</span>，</span><span>守护正义</span></h1>
         <p class="hero-summary">全球首个集金融安全教育与集体维权于一体的变革性生态模型</p>
       </div>
       <div class="hero-credentials" aria-label="项目背景">
@@ -707,7 +706,7 @@
         <p>让散户拥有足以抗衡机构的武器，不再做案板上的鱼肉。</p>
         <div class="contact-lines">
           <a href="mailto:info@jdi-justice.io"><b aria-hidden="true">@</b><span>info@jdi-justice.io</span></a>
-          <div><b aria-hidden="true">W</b><span>www.jdi-justice.io</span></div>
+          <a href="https://jdiforce.io" target="_blank" rel="noopener"><b aria-hidden="true">W</b><span>jdiforce.io</span></a>
         </div>
       </div>
     </section>
