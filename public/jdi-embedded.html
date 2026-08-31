@@ -163,9 +163,7 @@
     font-weight:950;line-height:1.15;letter-spacing:-.015em;white-space:nowrap;
     text-shadow:0 4px 24px #000;
   }
-  .hero-copy h1>span{display:block}
-  .hero-copy h1>span .pdf-gold{display:inline}
-  html[lang="zh-CN"] .screen--hero .hero-copy h1>span{display:inline}
+  .hero-copy h1 span{display:inline}
   .hero-token{
     display:block;margin:17px 0 16px;color:var(--gold);
     font-size:clamp(3.5rem,5.5vw,5.3rem);font-weight:950;line-height:.98;
@@ -452,20 +450,22 @@
 
   @media (min-width:901px){
     html[lang="en"] .screen--hero .hero-copy{
-      left:5.9%;width:max-content;max-width:84vw;transform:none;
-      grid-template-columns:max-content;grid-template-rows:auto auto auto;
+      left:8.4%;width:max-content;max-width:84vw;transform:translateY(-50%);
+      grid-template-columns:max-content 220px;grid-template-rows:auto auto auto auto;
+      column-gap:18px;
     }
     html[lang="en"] .screen--hero .eyebrow{grid-column:1/-1;grid-row:1}
-    html[lang="en"] .screen--hero .hero-copy h1{display:block;grid-column:1/-1;grid-row:2;white-space:normal}
+    html[lang="en"] .screen--hero .hero-copy h1{display:contents;white-space:normal}
     html[lang="en"] .screen--hero .hero-copy h1 span:first-child{
-      margin-right:0;line-height:1.04;
+      grid-column:1/-1;grid-row:2;margin-right:0;line-height:1.04;
     }
     html[lang="en"] .screen--hero .hero-copy h1 span:nth-child(2){
-      line-height:1.04;white-space:normal;text-wrap:balance;
+      grid-column:1;grid-row:3;line-height:1.04;white-space:normal;text-wrap:balance;
     }
-    html[lang="en"] .screen--hero .hero-summary{grid-column:1/-1;grid-row:3;max-width:720px}
-    html[lang="en"] .screen--hero .hero-copy{top:26.225%;left:5.9%;transform:none}
-    html[lang="en"] .screen--hero .hero-credentials{top:65.725%;width:min(960px,64vw)}
+    html[lang="en"] .screen--hero .hero-token{grid-column:2;grid-row:3;align-self:end;justify-self:start}
+    html[lang="en"] .screen--hero .hero-summary{grid-column:1/-1;grid-row:4;max-width:720px}
+    html[lang="en"] .screen--hero .hero-copy{top:27%;left:5.9%;transform:none}
+    html[lang="en"] .screen--hero .hero-credentials{top:66.5%;width:min(960px,64vw)}
   }
 
   @media (min-width:1050px){
@@ -583,16 +583,29 @@
     </div>
   </header>
 
-  <div class="side-label" id="sideLabel">01 / 09 · HOME</div>
+  <div class="side-label" id="sideLabel">01 / 09 · JOIN</div>
   <div class="hint"><span class="key">↑</span><span class="key">↓</span> SCROLL</div>
   <div class="progress"><span id="bar"></span></div>
 
   <main class="deck" id="deck">
-    <section class="screen screen--cover screen--hero" data-index="1" data-label="HOME">
+    <section class="screen screen--cover screen--join" data-index="1" data-label="JOIN">
+      <div class="art contact-art" aria-hidden="true"><img src="assets/cinematic/final-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" fetchpriority="high" /></div>
+      <div class="copy">
+        <h2 class="section-title contact-title"><span>加入<span class="jdi-regular pdf-gold">JDI$</span>，</span><span>守护正义</span></h2>
+        <p>让散户拥有足以抗衡机构的武器，不再做案板上的鱼肉。</p>
+        <div class="contact-lines">
+          <a href="mailto:info@jdiforce.io"><b aria-hidden="true">@</b><span>info@jdiforce.io</span></a>
+          <a href="https://jdiforce.io" target="_blank" rel="noopener"><b aria-hidden="true">W</b><span>jdiforce.io</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--cover screen--hero" data-index="2" data-label="INTRO">
       <div class="art hero-art" aria-hidden="true"><img src="assets/cinematic/coin-hero-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" fetchpriority="high" /></div>
       <div class="copy hero-copy">
         <p class="eyebrow">JOINT DEFENCE INITIATIVE (JDI$)</p>
-        <h1><span>加入<span class="jdi-regular pdf-gold">JDI$</span>，</span><span>守护正义</span></h1>
+        <h1><span>守卫正义的</span><span>散户防线</span></h1>
+        <span class="hero-token">JDI$</span>
         <p class="hero-summary">全球首个集金融安全教育与集体维权于一体的变革性生态模型</p>
       </div>
       <div class="hero-credentials" aria-label="项目背景">
@@ -613,7 +626,7 @@
       </div>
     </section>
 
-    <section class="screen screen--cover screen--pain" data-index="2" data-label="PAIN">
+    <section class="screen screen--cover screen--pain" data-index="3" data-label="PAIN">
       <div class="art pain-art" aria-hidden="true"><img src="assets/cinematic/pain-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
       <div class="copy">
         <h2 class="section-title pain-title"><span>痛点剖析：</span><span class="pdf-gold">跨境与信息鸿沟</span></h2>
@@ -621,7 +634,7 @@
       </div>
     </section>
 
-    <section class="screen screen--system screen--mission" data-index="3" data-label="MISSION">
+    <section class="screen screen--system screen--mission" data-index="4" data-label="MISSION">
       <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/mission-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" /></div>
       <div class="content">
         <h2 class="section-title"><span class="jdi-regular">JDI$</span>的使命：双轮驱动闭环</h2>
@@ -632,7 +645,7 @@
       </div>
     </section>
 
-    <section class="screen screen--system screen--pillars" data-index="4" data-label="PILLARS">
+    <section class="screen screen--system screen--pillars" data-index="5" data-label="PILLARS">
       <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/dawn-collective.jpg" alt="" loading="eager" decoding="async" /></div>
       <div class="content">
         <h2 class="section-title"><span class="jdi-regular">JDI$</span>的三大颠覆性产品支柱</h2>
@@ -644,7 +657,7 @@
       </div>
     </section>
 
-    <section class="screen screen--cover screen--token" data-index="5" data-label="TOKEN">
+    <section class="screen screen--cover screen--token" data-index="6" data-label="TOKEN">
       <div class="art" aria-hidden="true"><img src="assets/cinematic/value-capture.jpg" alt="" loading="eager" decoding="async" /></div>
       <div class="copy">
         <h2 class="section-title">代币经济：<span class="pdf-gold">正义的无限通缩</span></h2>
@@ -652,7 +665,7 @@
       </div>
     </section>
 
-    <section class="screen screen--system screen--allocation" data-index="6" data-label="ALLOC">
+    <section class="screen screen--system screen--allocation" data-index="7" data-label="ALLOC">
       <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/token-allocation.jpg" alt="" loading="eager" decoding="async" /></div>
       <div class="content">
         <h2 class="section-title"><span class="jdi-regular">JDI$</span><span class="allocation-title-line">通证分配架构</span></h2>
@@ -665,7 +678,7 @@
       </div>
     </section>
 
-    <section class="screen screen--deep screen--capture" data-index="7" data-label="VALUE">
+    <section class="screen screen--deep screen--capture" data-index="8" data-label="VALUE">
       <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/value-loop.jpg" alt="" loading="eager" decoding="async" /></div>
       <div class="content">
         <h2 class="section-title compact"><span class="jdi-regular">JDI$</span>的多维价值捕获与通缩闭环</h2>
@@ -686,7 +699,7 @@
       </div>
     </section>
 
-    <section class="screen screen--system screen--roadmap" data-index="8" data-label="ROADMAP">
+    <section class="screen screen--system screen--roadmap" data-index="9" data-label="ROADMAP">
       <div class="art wide-art" aria-hidden="true"><img src="assets/cinematic/road-guardian.jpg" alt="" loading="eager" decoding="async" /></div>
       <div class="content">
         <h2 class="section-title"><span class="jdi-regular">JDI$</span>业务落地推进路线图</h2>
@@ -699,17 +712,6 @@
       </div>
     </section>
 
-    <section class="screen screen--cover screen--join" data-index="9" data-label="JOIN">
-      <div class="art contact-art" aria-hidden="true"><img src="assets/cinematic/final-guardian-sacred-v1.png" alt="" loading="eager" decoding="async" /></div>
-      <div class="copy">
-        <h2 class="section-title contact-title"><span>加入<span class="jdi-regular pdf-gold">JDI$</span>，</span><span>守护正义</span></h2>
-        <p>让散户拥有足以抗衡机构的武器，不再做案板上的鱼肉。</p>
-        <div class="contact-lines">
-          <a href="mailto:info@jdi-justice.io"><b aria-hidden="true">@</b><span>info@jdi-justice.io</span></a>
-          <a href="https://jdiforce.io" target="_blank" rel="noopener"><b aria-hidden="true">W</b><span>jdiforce.io</span></a>
-        </div>
-      </div>
-    </section>
   </main>
   <p class="sr-only" id="livePage" aria-live="polite">1 / 9</p>
 
